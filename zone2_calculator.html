@@ -1,31 +1,227 @@
 <!DOCTYPE html>
-
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zone 2 Heart Rate Calculator</title>
 <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f7f7f7; }
-    h1 { color: #333; }
-    input { padding: 5px; margin: 5px 0; width: 100px; }
-    button { padding: 5px 10px; margin-top: 10px; cursor: pointer; }
-    .result { margin-top: 20px; padding: 10px; background-color: #fff; border-radius: 5px; box-shadow: 0 0 5px #ccc; }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        max-width: 500px;
+        width: 100%;
+        padding: 40px;
+        animation: slideIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    h1 {
+        color: #667eea;
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 30px;
+        font-size: 14px;
+    }
+
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        color: #333;
+        font-weight: 600;
+        margin-bottom: 8px;
+        font-size: 15px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f9f9f9;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    button {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    .result {
+        margin-top: 30px;
+        padding: 25px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 15px;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .result h3 {
+        color: #667eea;
+        margin-bottom: 15px;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .result-item {
+        background: white;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .result-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .result-item strong {
+        color: #667eea;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 16px;
+    }
+
+    .result-item .value {
+        color: #333;
+        font-size: 24px;
+        font-weight: 700;
+        text-align: center;
+        display: block;
+    }
+
+    .heart-icon {
+        text-align: center;
+        font-size: 50px;
+        margin-bottom: 20px;
+        animation: heartbeat 1.5s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        25% { transform: scale(1.1); }
+        50% { transform: scale(1); }
+    }
+
+    @media (max-width: 480px) {
+        .container {
+            padding: 25px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 12px;
+        }
+    }
 </style>
 </head>
 <body>
 
-<h1>Zone 2 Heart Rate Calculator</h1>
-<p>กรอกอายุและ Resting Heart Rate ของคุณ</p>
+<div class="container">
+    <div class="heart-icon">❤️</div>
+    <h1>Zone 2 Heart Rate Calculator</h1>
+    <p class="subtitle">คำนวณอัตราการเต้นของหัวใจโซน 2 สำหรับการออกกำลังกาย</p>
 
-<label>อายุ (ปี): </label><input type="number" id="age" min="10" max="120"><br> <label>Resting Heart Rate (bpm): </label><input type="number" id="restHR" min="30" max="120"><br>
+    <div class="input-group">
+        <label>อายุ (ปี):</label>
+        <input type="number" id="age" min="10" max="120" placeholder="ใส่อายุของคุณ">
+    </div>
 
-<button onclick="calculateZone2()">คำนวณ Zone 2</button>
+    <div class="input-group">
+        <label>Resting Heart Rate (bpm):</label>
+        <input type="number" id="restHR" min="30" max="120" placeholder="อัตราการเต้นของหัวใจขณะพัก">
+    </div>
 
-<div class="result" id="result" style="display:none;">
-    <h3>ผลลัพธ์:</h3>
-    <p id="basicZone"></p>
-    <p id="karvonenZone"></p>
+    <button onclick="calculateZone2()">🔍 คำนวณ Zone 2</button>
+
+    <div class="result" id="result" style="display:none;">
+        <h3>✨ ผลลัพธ์ของคุณ</h3>
+        <div class="result-item">
+            <strong>📊 Basic Zone 2:</strong>
+            <span class="value" id="basicZone"></span>
+        </div>
+        <div class="result-item">
+            <strong>🎯 Karvonen Zone 2:</strong>
+            <span class="value" id="karvonenZone"></span>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -49,8 +245,8 @@ function calculateZone2() {
     const karvonenHigh = Math.round(restHR + (0.7 * hrReserve));
 
     // แสดงผล
-    document.getElementById('basicZone').innerText = `Basic Zone 2: ${basicLow} - ${basicHigh} bpm`;
-    document.getElementById('karvonenZone').innerText = `Karvonen Zone 2: ${karvonenLow} - ${karvonenHigh} bpm`;
+    document.getElementById('basicZone').innerText = `${basicLow} - ${basicHigh} bpm`;
+    document.getElementById('karvonenZone').innerText = `${karvonenLow} - ${karvonenHigh} bpm`;
     document.getElementById('result').style.display = 'block';
 }
 </script>
