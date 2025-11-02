@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zone 2 Heart Rate Calculator</title>
+<style>
+    body { font-family: Arial, sans-serif; padding: 20px; background-color: #f7f7f7; }
+    h1 { color: #333; }
+    input { padding: 5px; margin: 5px 0; width: 100px; }
+    button { padding: 5px 10px; margin-top: 10px; cursor: pointer; }
+    .result { margin-top: 20px; padding: 10px; background-color: #fff; border-radius: 5px; box-shadow: 0 0 5px #ccc; }
+</style>
+</head>
+<body>
+
+<h1>Zone 2 Heart Rate Calculator</h1>
+<p>กรอกอายุและ Resting Heart Rate ของคุณ</p>
+
+<label>อายุ (ปี): </label><input type="number" id="age" min="10" max="120"><br> <label>Resting Heart Rate (bpm): </label><input type="number" id="restHR" min="30" max="120"><br>
+
+<button onclick="calculateZone2()">คำนวณ Zone 2</button>
+
+<div class="result" id="result" style="display:none;">
+    <h3>ผลลัพธ์:</h3>
+    <p id="basicZone"></p>
+    <p id="karvonenZone"></p>
+</div>
+
+<script>
+function calculateZone2() {
+    const age = parseInt(document.getElementById('age').value);
+    const restHR = parseInt(document.getElementById('restHR').value);
+
+    if (isNaN(age) || isNaN(restHR)) {
+        alert("กรุณากรอกตัวเลขให้ถูกต้อง");
+        return;
+    }
+
+    // Basic Zone 2
+    const maxHR = 220 - age;
+    const basicLow = Math.round(maxHR * 0.6);
+    const basicHigh = Math.round(maxHR * 0.7);
+
+    // Karvonen Zone 2
+    const hrReserve = maxHR - restHR;
+    const karvonenLow = Math.round(restHR + (0.6 * hrReserve));
+    const karvonenHigh = Math.round(restHR + (0.7 * hrReserve));
+
+    // แสดงผล
+    document.getElementById('basicZone').innerText = `Basic Zone 2: ${basicLow} - ${basicHigh} bpm`;
+    document.getElementById('karvonenZone').innerText = `Karvonen Zone 2: ${karvonenLow} - ${karvonenHigh} bpm`;
+    document.getElementById('result').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
